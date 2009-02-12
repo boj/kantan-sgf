@@ -1,0 +1,48 @@
+~~ ABOUT ~~~~~*
+
+KANTAN means "simple" or "easy" in
+that wacky Japanese language.
+
+There doesn't seem to be any such
+thing as a dedicated Ruby SGF project.
+I know because I've been looking for 
+a few years.  
+
+If I missed one, sorry.
+
+Anyways, I got sick of searching around, 
+and an SGF parser applies to the
+project I am working on, so I broke down
+and wrote this.
+
+It doesn't do node parsing, it doesn't
+return half the properties (yet).  
+It's actually a super bare bones parser, 
+and not that great.
+
+However, if you just want to do some
+basic SGF parsing this is the project
+for you!
+
+~~ USAGE ~~~~~*
+
+You pretty much run it like so:
+
+  # Load and parse
+	sgf = Sgf.new('data/game-01.sgf')
+	sgf.parse
+	
+	# Pull back properties
+	puts sgf.player_black
+	puts sgf.player_white
+	puts sgf.komi
+	puts sgf.result
+	
+	# do some magic with the move hash
+	for move in sgf.move_list
+		puts "%s: (%i, %i)" % [move[:color], move[:x], move[:y]]
+	end
+	
+Note that the move data is stored as:
+ * color: 'B' or 'W'
+ * x, y:  Integer value from 0..board_size
