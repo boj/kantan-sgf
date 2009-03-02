@@ -54,8 +54,8 @@ module KantanSgf
           case info[:property]
             when 'B', 'W'
               move[:color] = info[:property]
-              move[:x] = @symbol_table[info[:data][0]]
-              move[:y] = @symbol_table[info[:data][1]]
+              move[:x] = @symbol_table[info[:data][0].chr]
+              move[:y] = @symbol_table[info[:data][1].chr]
             when 'BL', 'WL'
               move[:time] = info[:data]
             when 'OB', 'OW'
