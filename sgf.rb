@@ -1,147 +1,130 @@
-class Sgf
-  
-  attr_accessor :move_list, :properties
-  
-  def initialize(file)
-    @file = file
-    @data = nil
-    @properties = {}
-    
-    @symbol_table = {}
-    a = 'a'
-    for i in 0..18
-      @symbol_table.store(a, i)
-      a = a.succ
-    end
-    
-    @move_list = []
-  end
+dir = File.dirname(__FILE__)
+require 'rubygems'
+require 'treetop'
 
-  def parse
-    f = File.open(@file)
-    @data = StringReader.new(f.read)
-    f.close
+# Grammar
+require "#{dir}/grammar/sgf-grammar"
+
+module Kantan
+  class Sgf
+  
+    attr_accessor :move_list, :properties
+  
+    def initialize(file)
+      @file = file
+      @data = nil
+      @properties = {}
     
-    buffer    = ''
-    property  = ''
-    atoz      = ('A'..'Z').to_a
-    while !@data.eod?
-      c = @data.get
-      if atoz.include?(c.chr)
-        buffer += c.chr
+      @symbol_table = {}
+      a = 'a'
+      for i in 0..18
+        @symbol_table.store(a, i)
+        a = a.succ
       end
-      if @data.next == ?[ and buffer.length > 0
-        property = buffer
-        buffer = ''
-        @data.get # pop off the [
-        n = true
-        # Grab the property's data
-        while v = @data.get and n == true
-          if v != ?]
-            buffer += v.chr
-          else
-            n = false
+    
+      @move_list = []
+    end
+
+    def parse
+      f = File.open(@file)
+      @data = f.read
+      f.close
+      
+      @sgf = SgfGrammarParser.new
+      results = @sgf.parse(@data)
+      raise "Parsing failed due to [#{@sgf.failure_reason}]." if results.nil?
+      
+      # Pull the data out of the Treetop grammar parser
+      data = results.value
+      
+      # Header info
+      header = data.shift
+      header.each do |chunk|
+        @properties.store(chunk[:property], chunk[:data])
+      end
+      # Footer info
+      footer = data.pop
+      footer.each do |chunk|
+        @properties.store(chunk[:property], chunk[:data])
+      end
+      # Moves
+      data.each do |chunk|
+        move = {}
+        chunk.each do |info|
+          case info[:property]
+            when 'B', 'W'
+              move[:color] = info[:property]
+              move[:x] = @symbol_table[info[:data][0]]
+              move[:y] = @symbol_table[info[:data][1]]
+            when 'BL', 'WL'
+              move[:time] = info[:data]
+            when 'OB', 'OW'
+              move[:ot_stones] = info[:data]
           end
         end
-        # If it's a game move push it
-        if ['B', 'W'].include?(property)
-          @move_list.push(
-            {
-              :color => property, 
-              :x => @symbol_table[buffer[0].chr].to_i, 
-              :y => @symbol_table[buffer[1].chr].to_i
-            }
-          )
-        else # Push it as a property
-          @properties.store(property, buffer)
-        end
-        buffer    = ''
-        property  = ''
+        @move_list << move
       end
     end
+  
+    def player_black
+      return @properties["PB"]
+    end
+  
+    def player_white
+      return @properties["PW"]
+    end
+  
+    def rank_black
+      return @properties["BR"]
+    end
+  
+    def rank_white
+      return @properties["WR"]
+    end
+  
+    def board_size
+      return @properties.include?("SZ") ? @properties["SZ"].to_i : 19
+    end
+  
+    def komi
+      return @properties["KM"]
+    end
+  
+    def result
+      return @properties["RE"]
+    end
+  
+    def handicap
+      return @properties["HA"]
+    end
+  
+    def player_time
+      return @properties["TM"]
+    end
+  
+    def game_date
+      return @properties["DT"]
+    end
+  
+    def game_event
+      return @properties["EV"]
+    end
+  
+    def game_round
+      return @properties["RO"]
+    end
+  
+    def game_place
+      return @properties["PC"]
+    end
+  
+    def game_rules
+      return @properties["RU"]
+    end
+  
+    def game_name
+      return @properties["GN"]
+    end
+  
   end
-  
-  def player_black
-    return @properties["PB"]
-  end
-  
-  def player_white
-    return @properties["PW"]
-  end
-  
-  def rank_black
-    return @properties["BR"]
-  end
-  
-  def rank_white
-    return @properties["WR"]
-  end
-  
-  def board_size
-    return @properties.include?("SZ") ? @properties["SZ"].to_i : 19
-  end
-  
-  def komi
-    return @properties["KM"]
-  end
-  
-  def result
-    return @properties["RE"]
-  end
-  
-  def handicap
-    return @properties["HA"]
-  end
-  
-  def player_time
-    return @properties["TM"]
-  end
-  
-  def game_date
-    return @properties["DT"]
-  end
-  
-  def game_event
-    return @properties["EV"]
-  end
-  
-  def game_round
-    return @properties["RO"]
-  end
-  
-  def game_place
-    return @properties["PC"]
-  end
-  
-  def game_rules
-    return @properties["RU"]
-  end
-  
-  def game_name
-    return @properties["GN"]
-  end
-  
-end
-
-class StringReader
-  
-  def initialize(data)
-    @data = data
-    @index = 0
-  end
-  
-  def get
-    d = @data[@index]
-    @index += 1
-    return d
-  end
-  
-  def next
-    return @data[@index]
-  end
-  
-  def eod?
-    return true if @index >= @data.length
-  end
-  
 end

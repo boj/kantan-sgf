@@ -1,0 +1,68 @@
+grammar SgfGrammar
+	rule node
+		'(' chunk* ')' sp {
+			def value
+				get([elements[1]])
+			end
+			
+			def get(e)
+				a = []
+				if !e.nil?
+			    e.each do |el|
+						if el.respond_to?(:value)
+							a << el.value
+						else
+			      	a += get(el.elements) if !el.nil?
+			      end
+			    end
+			  end
+				a
+			end
+		}
+	end
+
+	rule chunk
+		';' property_set* sp {
+			def value
+				get([elements[1]])
+			end
+			
+			def get(e)
+				a = []
+				if !e.nil?
+			    e.each do |el|
+						if el.respond_to?(:value)
+							a << el.value
+						else
+			      	a += get(el.elements) if !el.nil?
+			      end
+			    end
+			  end
+				a
+			end
+		}
+	end
+	
+	rule property_set
+		property property_bracket* sp {
+			def value
+				{ 
+					:property => elements[0].text_value, 
+					:data => elements[1].text_value[1..-2]
+				}
+			end
+		}
+	end
+	
+	rule property_bracket
+    '[' ( [^\[\]] / property_bracket )* ']'
+  end
+	
+	rule property
+		[A-Z]+ / [A-Z] sp
+	end
+	
+	rule sp
+		[\r\n\t ]*
+	end
+end

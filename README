@@ -15,21 +15,19 @@ and an SGF parser applies to the
 project I am working on, so I broke down
 and wrote this.
 
-It doesn't do node parsing, it doesn't
-return half the properties (yet).  
-It's actually a super bare bones parser, 
-and not that great.
-
-However, if you just want to do some
-basic SGF parsing this is the project
-for you!
+It doesn't do node parsing (yet).  
+I just upgraded it using Treetop grammar
+to parse the file, so a good majority of
+the data is pulled out now.  Some of it
+will get refined with more internal handling,
+but for now enjoy!
 
 ~~ USAGE ~~~~~*
 
 You pretty much run it like so:
 
   # Load and parse
-	sgf = Sgf.new('data/game-01.sgf')
+	sgf = Kantan::Sgf.new('data/stoic-bojo.sgf')
 	sgf.parse
 	
 	# Pull back properties
@@ -45,4 +43,6 @@ You pretty much run it like so:
 	
 Note that the move data is stored as:
  * color: 'B' or 'W'
- * x, y:  Integer value from 0..board_size
+ * x, y:  Integer value from 0..board_size - 1
+ * time: Clock time left
+ * ot_stones: Overtime stones
