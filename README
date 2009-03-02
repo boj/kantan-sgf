@@ -22,12 +22,18 @@ the data is pulled out now.  Some of it
 will get refined with more internal handling,
 but for now enjoy!
 
+~~ Requirements ~~~~~*
+
+Requires the Treetop gem to run.
+
+  $ gem install treetop
+
 ~~ USAGE ~~~~~*
 
 You pretty much run it like so:
 
   # Load and parse
-	sgf = Kantan::Sgf.new('data/stoic-bojo.sgf')
+	sgf = KantanSgf::Sgf.new('data/stoic-bojo.sgf')
 	sgf.parse
 	
 	# Pull back properties

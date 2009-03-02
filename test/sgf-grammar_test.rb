@@ -4,7 +4,7 @@ require 'treetop'
 require "test/unit"
 
 # Grammar
-Treetop.load "#{dir}/sgf-grammar.tt"
+Treetop.load "#{dir}/../lib/grammar/sgf-grammar.tt"
 
 class SgfGrammarTest < Test::Unit::TestCase
   

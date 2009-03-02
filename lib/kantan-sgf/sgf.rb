@@ -3,9 +3,9 @@ require 'rubygems'
 require 'treetop'
 
 # Grammar
-require "#{dir}/grammar/sgf-grammar"
+require "#{dir}/../grammar/sgf-grammar"
 
-module Kantan
+module KantanSgf
   class Sgf
   
     attr_accessor :move_list, :properties
