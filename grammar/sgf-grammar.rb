@@ -7,13 +7,21 @@ module SgfGrammar
 
   module Node0
     def sp
+      elements[1]
+    end
+
+    def sp
       elements[3]
+    end
+
+    def sp
+      elements[5]
     end
   end
 
   module Node1
 			def value
-				get([elements[1]])
+				get([elements[2]])
 			end
 			
 			def get(e)
@@ -49,29 +57,37 @@ module SgfGrammar
     end
     s0 << r1
     if r1
-      s2, i2 = [], index
-      loop do
-        r3 = _nt_chunk
-        if r3
-          s2 << r3
-        else
-          break
-        end
-      end
-      r2 = SyntaxNode.new(input, i2...index, s2)
+      r2 = _nt_sp
       s0 << r2
       if r2
-        if input.index(')', index) == index
-          r4 = (SyntaxNode).new(input, index...(index + 1))
-          @index += 1
-        else
-          terminal_parse_failure(')')
-          r4 = nil
+        s3, i3 = [], index
+        loop do
+          r4 = _nt_chunk
+          if r4
+            s3 << r4
+          else
+            break
+          end
         end
-        s0 << r4
-        if r4
+        r3 = SyntaxNode.new(input, i3...index, s3)
+        s0 << r3
+        if r3
           r5 = _nt_sp
           s0 << r5
+          if r5
+            if input.index(')', index) == index
+              r6 = (SyntaxNode).new(input, index...(index + 1))
+              @index += 1
+            else
+              terminal_parse_failure(')')
+              r6 = nil
+            end
+            s0 << r6
+            if r6
+              r7 = _nt_sp
+              s0 << r7
+            end
+          end
         end
       end
     end
@@ -91,13 +107,17 @@ module SgfGrammar
 
   module Chunk0
     def sp
-      elements[2]
+      elements[1]
+    end
+
+    def sp
+      elements[3]
     end
   end
 
   module Chunk1
 			def value
-				get([elements[1]])
+				get([elements[2]])
 			end
 			
 			def get(e)
@@ -133,20 +153,24 @@ module SgfGrammar
     end
     s0 << r1
     if r1
-      s2, i2 = [], index
-      loop do
-        r3 = _nt_property_set
-        if r3
-          s2 << r3
-        else
-          break
-        end
-      end
-      r2 = SyntaxNode.new(input, i2...index, s2)
+      r2 = _nt_sp
       s0 << r2
       if r2
-        r4 = _nt_sp
-        s0 << r4
+        s3, i3 = [], index
+        loop do
+          r4 = _nt_property_set
+          if r4
+            s3 << r4
+          else
+            break
+          end
+        end
+        r3 = SyntaxNode.new(input, i3...index, s3)
+        s0 << r3
+        if r3
+          r5 = _nt_sp
+          s0 << r5
+        end
       end
     end
     if s0.last

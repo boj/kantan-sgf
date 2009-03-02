@@ -1,8 +1,8 @@
 grammar SgfGrammar
 	rule node
-		'(' chunk* ')' sp {
+		'(' sp chunk* sp ')' sp {
 			def value
-				get([elements[1]])
+				get([elements[2]])
 			end
 			
 			def get(e)
@@ -22,9 +22,9 @@ grammar SgfGrammar
 	end
 
 	rule chunk
-		';' property_set* sp {
+		';' sp property_set* sp {
 			def value
-				get([elements[1]])
+				get([elements[2]])
 			end
 			
 			def get(e)

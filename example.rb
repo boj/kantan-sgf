@@ -1,8 +1,8 @@
 require 'sgf'
 
 # Load and parse
-#sgf = Kantan::Sgf.new('data/game-01.sgf')
-sgf = Kantan::Sgf.new('data/stoic-bojo.sgf')
+sgf = Kantan::Sgf.new('data/game-01.sgf')
+#sgf = Kantan::Sgf.new('data/stoic-bojo.sgf')
 sgf.parse
 
 # Pull back properties
