@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name = %q{kantan-sgf}
-  s.version = "0.0.1"
+  s.version = "0.0.2"
   s.authors = ["Brian bojo Jones"]
   s.date = %q{2009-03-02}
   s.description = %q{a Simple Game Format (SGF) parser}
