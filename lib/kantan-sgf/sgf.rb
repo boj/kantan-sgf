@@ -23,7 +23,7 @@ module KantanSgf
       end
     
       @move_list = []
-      @comments = []
+      @comments = {}
     end
 
     def parse
@@ -42,7 +42,7 @@ module KantanSgf
       header = data.shift
       header.each do |chunk|
         if chunk[:property] == "C"
-          @comments << {:move => nil, :data => chunk[:data]}
+          @comments.store("0", chunk[:data])
         else  
           @properties.store(chunk[:property], chunk[:data])
         end
@@ -68,7 +68,7 @@ module KantanSgf
             when 'OB', 'OW'
               move[:ot_stones] = info[:data]
             when 'C'
-              @comments << {:move => move_count, :data => info[:data]}
+              @comments.store(move_count.to_s, info[:data])
             else
               @properties.store(info[:property], info[:data]) 
           end
