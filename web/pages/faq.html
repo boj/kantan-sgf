@@ -1,0 +1,29 @@
+<h3>FAQ</h3>
+
+<p>
+	<strong>Q: What does "kantan" mean?</strong>
+</p>
+<p>
+	A: "kantan" is the word for <em>simple</em> in the Japanese language.
+	I chose this word since it relates to the project (<em>Simple</em> Game Format),
+	and as a student of Japanese I enjoy using the language's words.
+</p>
+
+<p>
+	<strong>Q: Why did you make kantan-sgf?</strong>
+</p>
+
+<p>
+	A: There seemed to be a complete lack of standalone Ruby SGF parsers,
+	and a few of my other projects required such a tool.  I finally broke
+	down and wrote one, which turned into a good exercise on Treetop grammar
+	usage, gem building, etc.
+</p>
+
+<p>
+	<strong>Q: When I loop through the game moves it fails.  Why?</strong>
+<p>
+	
+<p>
+	A: Check if it's a pass move <tt>move.include?(:pass)</tt>
+</p>

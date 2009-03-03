@@ -1,0 +1,7 @@
+require 'rake'
+
+task :default => [:build]
+
+task :build do
+  sh "ruby build.rb"
+end

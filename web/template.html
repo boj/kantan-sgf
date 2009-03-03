@@ -1,0 +1,48 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+	<meta http-equiv="content-type" content="application/xhtml+xml; charset=iso-8859-1" />
+	<meta name="author" content="Brian Jones" />
+	<meta name="robots" content="all" />
+
+	<title><%= @title %></title>
+	
+	<style type="text/css" media="all">
+		@import "<%= @css %>";
+	</style>
+
+   <script src="http://www.google-analytics.com/urchin.js" type="text/javascript"></script>
+   <script type="text/javascript">
+       _uacct = "UA-1531113-1";
+       urchinTracker();
+   </script>
+	
+</head>
+
+<body id="main">
+
+	<div id="content">
+		<div id="header">
+			<h1><a href="index.html" title="<%= @header %>"><%= @header %></a></h1>
+		</div>
+
+		<div id="navigation">
+			<% for nav in @navigation %>
+			<span class="navitem"><a href="<%= nav["url"] %>" title="<%= nav["name"] %>"><%= nav["name"] %></a></span>
+			<% end %>
+		</div>
+		<%= @content %>
+		<div id="footer">
+			<div id="validation">
+				<em>Page validation:</em>
+				<a href="http://validator.w3.org/check/referer" title="Check the validity of this site&#8217;s XHTML">xhtml</a> &nbsp; 
+				<a href="http://jigsaw.w3.org/css-validator/check/referer" title="Check the validity of this site&#8217;s CSS">css</a> &nbsp; 
+			</div>	
+			<div id="generated">
+				<em>Date Generated:</em> <%= Time.new %>
+			</div>	
+		</div>
+	</div>
+	
+</body>
+</html>

@@ -1,0 +1,16 @@
+title: Kantan SGF
+header: Kantan SGF
+css: kantan.css
+
+template_file: template.html
+page_dir: pages
+static_dir: static
+output_dir: web
+
+navigation:
+  - name: News
+    url: index.html
+  - name: FAQ
+    url: faq.html
+  - name: Documentation
+    url: doc.html

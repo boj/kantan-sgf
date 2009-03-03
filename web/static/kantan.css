@@ -1,0 +1,27 @@
+body {
+	font: 12px/1.5em "Lucida Grande", "Lucida Sans Unicode", geneva, verdana, sans-serif;
+}
+
+a {
+	color: #333333;
+	background: #FFFFFF;
+}
+
+a:visited {
+	color: #003399;
+	background: #FFFFFF;
+}
+
+a:hover {
+	color: #666666;
+	background: #FFFFFF;
+}
+
+#content {
+	margin: 10%;
+}
+
+#footer {
+	text-align: center;
+	margin: 10px;
+}
