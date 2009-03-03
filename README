@@ -1,19 +1,15 @@
 ~~ ABOUT ~~~~~*
 
-KANTAN means "simple" or "easy" in
-that wacky Japanese language.
+Author:  Brian "bojo" Jones
+Email:  mojobojo@gmail.com
 
-There doesn't seem to be any such
-thing as a dedicated Ruby SGF project.
-I know because I've been looking for 
-a few years.  
+KANTAN means "simple" in Japanese.
 
-If I missed one, sorry.
-
-Anyways, I got sick of searching around, 
-and an SGF parser applies to the
-project I am working on, so I broke down
-and wrote this.
+Due to the lack of standalone Ruby SGF parsers,
+I ended up writing this project to help with a
+few other side projects.  Hopefully it benefits
+other people interested in using Ruby for their
+SGF parsing related projects.
 
 It doesn't do node parsing (yet).  
 I just upgraded it using Treetop grammar
@@ -48,7 +44,15 @@ You pretty much run it like so:
 	end
 	
 Note that the move data is stored as:
+ * move: The current move number
  * color: 'B' or 'W'
  * x, y:  Integer value from 0..board_size - 1
  * time: Clock time left
  * ot_stones: Overtime stones
+ * pass: true
+
+Properties can be accessed directly via
+sgf.properties["prop_name"].
+
+Comments can be access via
+sgf.comments # {:move, :data}

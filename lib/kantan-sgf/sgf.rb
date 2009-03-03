@@ -8,7 +8,7 @@ require "#{dir}/../grammar/sgf-grammar"
 module KantanSgf
   class Sgf
   
-    attr_accessor :move_list, :properties
+    attr_accessor :move_list, :properties, :comments
   
     def initialize(file)
       @file = file
@@ -23,6 +23,7 @@ module KantanSgf
       end
     
       @move_list = []
+      @comments = []
     end
 
     def parse
@@ -37,31 +38,39 @@ module KantanSgf
       # Pull the data out of the Treetop grammar parser
       data = results.value
       
-      # Header info
+      # Header info - Typically the first chunk is game data
       header = data.shift
       header.each do |chunk|
-        @properties.store(chunk[:property], chunk[:data])
-      end
-      # Footer info
-      footer = data.pop
-      footer.each do |chunk|
-        @properties.store(chunk[:property], chunk[:data])
+        if chunk[:property] == "C"
+          @comments << {:move => nil, :data => chunk[:data]}
+        else  
+          @properties.store(chunk[:property], chunk[:data])
+        end
       end
       # Moves
+      move_count = 0
       data.each do |chunk|
+        move_count += 1
         move = {}
         chunk.each do |info|
+          move[:move] = move_count
           case info[:property]
             when 'B', 'W'
               move[:color] = info[:property]
               if !info[:data].empty?
                 move[:x] = @symbol_table[info[:data][0].chr]
                 move[:y] = @symbol_table[info[:data][1].chr]
+              else
+                move[:pass] = true  
               end
             when 'BL', 'WL'
               move[:time] = info[:data]
             when 'OB', 'OW'
               move[:ot_stones] = info[:data]
+            when 'C'
+              @comments << {:move => move_count, :data => info[:data]}
+            else
+              @properties.store(info[:property], info[:data]) 
           end
         end
         @move_list << move
@@ -126,6 +135,30 @@ module KantanSgf
   
     def game_name
       return @properties["GN"]
+    end
+    
+    def game_time
+      return @properties["TM"]
+    end
+    
+    def game_overtime
+      return @properties["OT"]
+    end
+    
+    def territory_black
+      return @properties["TB"]
+    end
+    
+    def territory_white
+      return @properties["TW"]
+    end
+    
+    def sgf_version
+      return @properties["FF"]
+    end
+    
+    def sgf_application
+      return @properties["AP"]
     end
   
   end
